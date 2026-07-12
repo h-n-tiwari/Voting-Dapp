@@ -119,6 +119,11 @@ contract Create {
         }
 
 
+    function getCandidate() public view returns (address[] memory) {
+        return candidateAddress;
+    }
+
+
 
 
 
