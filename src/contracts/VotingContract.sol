@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 
-pragma solidity "0.8.34";
+pragma solidity ^0.8.34;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "hardhat/console.sol";
@@ -25,7 +25,7 @@ contract Create {
         string ipfs;
     }
 
-    event CandidateCreate (
+    event CandidateCreated (
         uint256 indexed candidateId,
         string age,
         string name,
@@ -38,8 +38,43 @@ contract Create {
     address[] public candidateAddress;
 
     mapping(address => Candidate) public candidates;
+    
 
-    ///// END OF CANDIDATE DATA /////
+    // END OF CANDIDATE DATA //
+
+    // VOTER DATA
+
+    address[] public votedVoters;
+
+    address public voterAddress;
+
+    mapping(address => Voter) public voters;
+
+    struct Voter {
+        uint256 voter_voterId;
+        string voter_name;
+        string voter_image;
+        address voter_address;
+        uint256 voter_allowed;
+        bool voter_voted;
+        uint256 voter_vote;
+        string voter_ipfs;
+    }
+
+    event VoterCreated (
+        uint256 indexed voter_voterId,
+        string voter_name,
+        string voter_image,
+        address voter_address,
+        uint256 voter_allowed,
+        bool voter_voted,
+        uint256 voter_vote,
+        string voter_ipfs
+
+    )
+
+
+    // END OF VOTER DATA //
 
 
 
