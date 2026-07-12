@@ -38,7 +38,7 @@ contract Create {
     address[] public candidateAddress;
 
     mapping(address => Candidate) public candidates;
-    
+
 
     // END OF CANDIDATE DATA //
 
@@ -75,6 +75,48 @@ contract Create {
 
 
     // END OF VOTER DATA //
+
+    constructor() {
+        votingOrganizer = msg.sender;
+    }
+
+    function setCandidate(
+        address _address, 
+        string memory _age, 
+        string memory _name,
+        string memory _image, 
+        string memory _ipfs
+    )
+        public {
+            require(votingOrganizer == msg.sender, "Only organizer can add candidates");
+
+            _candidateId.increment();
+
+            uint256 idNumber = _candidateId.current();
+
+            Candiddate storage candidate = candidates[_address];
+
+            candidate.age = _age;
+            candidate.name = _name;
+            candidate.candidateId = idNumber;
+            candidate.image = _image;
+            candidate.voteCount = 0;
+            candidate._address = _address;
+            candidate.ipfs = _ipfs;
+
+            candidateAddress.push(_address);
+
+            emit CandidateCreated(
+                idNumber,
+                _age,
+                _name,
+                _image,
+                candidate.voteCount,
+                _address,
+                _ipfs
+            );
+
+        }
 
 
 
