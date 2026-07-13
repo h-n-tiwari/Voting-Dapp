@@ -46,7 +46,7 @@ contract Create {
 
     address[] public votedVoters;
 
-    address public voterAddress;
+    address[] public voterAddress;
 
     mapping(address => Voter) public voters;
 
@@ -138,7 +138,7 @@ contract Create {
 			uint256,
 			string memory,
 			address
-		);
+		)
 	{
         return (
             candidates[_address].age,
@@ -147,11 +147,50 @@ contract Create {
             candidates[_address].image,
             candidates[_address].voteCount,
             candidates[_address].ipfs,
-            candidates[_address]._address,
+            candidates[_address]._address
 
         );
 
     }
+
+
+	// VOTER SECTION
+
+	function voterRight(address _address, string memory _name, string memory _image, string memory _ipfs) public {
+		require(votingOrganizer == msg.sender, "Only organizer can create voter");
+
+		_voterId.increment();
+
+		uint256 idNumber = _voterId.current();
+
+		Voter storage voter = voters[_address];
+
+		require(voter.voter_allowed == 0);
+
+		voter.voter_allowed = 1;
+		voter.voter_name = _name;
+		voter.voter_image = _image;
+		voter.voter_address = _address;
+		voter.voter_voterId = idNumber;
+		voter.voter_vote = 1000;
+		voter.voter_voted = false;
+		voter.voter_ipfs = _ipfs;
+
+		votersAddress.push(_address);
+
+		emit VoterCreated (
+			idNumber,
+			_name,
+			_image,
+ 			_address,
+			voter.voter_allowed,
+			voter.voter_voted,
+			voter.voter_vote,
+			_ipfs
+
+		);
+
+	}
 
 
 
