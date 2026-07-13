@@ -210,7 +210,31 @@ contract Create {
 		return votersAddress.length;
 	}
 
-	
+	function getVoterdata(address _address) 
+        public 
+        view 
+        returns (
+            uint256, 
+            string memory, 
+            string memory, 
+            address, 
+            string memory, 
+            uint256, 
+            bool
+        )
+    {
+        return (
+            voters[_address].voter_voterId,
+            voters[_address].voter_name,
+            voters[_address].voter_image,
+            voters[_address].voter_address,
+            voters[_address].voter_ipfs,
+            voters[_address].voter_allowed,
+            voters[_address].voter_voted
+
+        );
+    }
+
 
 
 
