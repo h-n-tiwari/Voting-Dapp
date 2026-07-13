@@ -127,6 +127,32 @@ contract Create {
         return candidateAddress.length;
     }
 
+    function getCandidatedata(address _address) 
+		public 
+		view 
+		returns(
+			string memory, 
+			string memory, 
+			uint256, 
+			string memory, 
+			uint256,
+			string memory,
+			address
+		);
+	{
+        return (
+            candidates[_address].age,
+            candidates[_address].name,
+            candidates[_address].candidateId,
+            candidates[_address].image,
+            candidates[_address].voteCount,
+            candidates[_address].ipfs,
+            candidates[_address]._address,
+
+        );
+
+    }
+
 
 
 
