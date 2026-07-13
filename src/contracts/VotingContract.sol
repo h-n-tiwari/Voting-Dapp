@@ -235,6 +235,10 @@ contract Create {
         );
     }
 
+    function getVotedVoterList() public view returns (address[] memory) {
+        return votedVoters;
+    }
+
 
 
 
