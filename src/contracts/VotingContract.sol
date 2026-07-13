@@ -123,6 +123,10 @@ contract Create {
         return candidateAddress;
     }
 
+    function getCandidateLength() public view returns (uint256) {
+        return candidateAddress.length;
+    }
+
 
 
 
