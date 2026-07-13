@@ -206,6 +206,12 @@ contract Create {
 		candidates[_candidateAddress].voteCount += voter.voter_allowed;
 	}
 
+	function getVoterLenght() public view returns(uint256) {
+		return votersAddress.length;
+	}
+
+	
+
 
 
 
