@@ -33,7 +33,7 @@ contract Create {
         uint256 voteCount,
         address _address,
         string ipfs
-    )
+    );
 
     address[] public candidateAddress;
 
@@ -71,7 +71,7 @@ contract Create {
         uint256 voter_vote,
         string voter_ipfs
 
-    )
+    );
 
 
     // END OF VOTER DATA //
@@ -190,6 +190,20 @@ contract Create {
 
 		);
 
+	}
+
+	function vote(address _candidateAddress, uint256 _candidateVoteId) external {
+		Vote storage voter = voters[msg.sender];
+
+		require(!voter.voter_voted, "You have already voted");
+		require(voter.voter_allowed != 0, 'You have no right to vote');
+
+		voter.voter_voted = true;
+		voter.voter_vote = _candidateVoteId;
+
+		votedVoters.push(msg.sender);
+
+		candidates[_candidateAddress].voteCount += voter.voter_allowed;
 	}
 
 
