@@ -9,7 +9,7 @@ contract Create {
     using Counters for Counters.Counter;
 
     Counters.Counter public _voterId;
-    Counter.Counter public _candidateId;
+    Counters.Counter public _candidateId;
 
     address public votingOrganizer;
 
@@ -94,7 +94,7 @@ contract Create {
 
             uint256 idNumber = _candidateId.current();
 
-            Candiddate storage candidate = candidates[_address];
+            Candidate storage candidate = candidates[_address];
 
             candidate.age = _age;
             candidate.name = _name;
@@ -176,7 +176,7 @@ contract Create {
 		voter.voter_voted = false;
 		voter.voter_ipfs = _ipfs;
 
-		votersAddress.push(_address);
+		voterAddress.push(_address);
 
 		emit VoterCreated (
 			idNumber,
@@ -193,10 +193,10 @@ contract Create {
 	}
 
 	function vote(address _candidateAddress, uint256 _candidateVoteId) external {
-		Vote storage voter = voters[msg.sender];
+		Voter storage voter = voters[msg.sender];
 
 		require(!voter.voter_voted, "You have already voted");
-		require(voter.voter_allowed != 0, 'You have no right to vote');
+		require(voter.voter_allowed != 0, "You have no right to vote");
 
 		voter.voter_voted = true;
 		voter.voter_vote = _candidateVoteId;
@@ -206,8 +206,8 @@ contract Create {
 		candidates[_candidateAddress].voteCount += voter.voter_allowed;
 	}
 
-	function getVoterLenght() public view returns(uint256) {
-		return votersAddress.length;
+	function getVoterLength() public view returns(uint256) {
+		return voterAddress.length;
 	}
 
 	function getVoterdata(address _address) 
@@ -241,7 +241,7 @@ contract Create {
 
 
     function getVoterList() public view returns (address[] memory) {
-        return votersAddress;
+       return voterAddress;
     }
 
 
