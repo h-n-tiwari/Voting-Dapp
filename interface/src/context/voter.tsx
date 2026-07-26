@@ -44,9 +44,3 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
         </VotingContext.Provider>
     );
 };
-
-const Voter = () => {
-    return <div>voter</div>;
-};
-
-export default Voter;
