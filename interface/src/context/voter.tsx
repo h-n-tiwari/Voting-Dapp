@@ -14,52 +14,68 @@ import type { ContractRunner } from "ethers";
 
 // Using the Kubo RPC client library to talk to an IPFS node
 
-const client = kuboRpcClient(
-    "https://ipfs.infura.io:5001/api/v0",
-);
+const client = kuboRpcClient("https://ipfs.infura.io:5001/api/v0");
 
 // Contract Function
 
 const fetchContract = (signerOrProvider: ContractRunner) =>
-    new ethers.Contract(VotingAddress, VotingAddressABI, signerOrProvider);
+  new ethers.Contract(VotingAddress, VotingAddressABI, signerOrProvider);
 
 interface VotingContextType {
-    votingTitle: string;
+  votingTitle: string;
+  // Added checkIfWalletConnected to the interface
+  checkIfWalletConnected: () => Promise<void>;
 }
 
 export const VotingContext = createContext<VotingContextType>({
-    votingTitle: "Default Voting Title",
+  votingTitle: "Default Voting Title",
+  // Added checkIfWalletConnected to the default value
+  checkIfWalletConnected: async () => {},
 });
 
 interface VotingProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export const VotingProvider = ({ children }: VotingProviderProps) => {
-    const votingTitle = "My first smart contract app";
-    const router = useRouter();
-    const [currentAccount, setCurrentAccount] = useState('');
-    const [candidateLength, setCandidateLength] = useState('');
-    const pushCandidate: unknown[] = [];
-    const candidateIndex: number [] = [];
-    const [candidateArray, setCandidateArray] = useState<unknown[]>(pushCandidate);
+  const votingTitle = "My first smart contract app";
+  const router = useRouter();
+  const [currentAccount, setCurrentAccount] = useState("");
+  const [candidateLength, setCandidateLength] = useState("");
+  const pushCandidate: unknown[] = [];
+  const candidateIndex: number[] = [];
+  const [candidateArray, setCandidateArray] =
+    useState<unknown[]>(pushCandidate);
 
-    // ---- END OF CANDIDATE DATA ----
+  // ---- END OF CANDIDATE DATA ----
 
-    const [error, setError] = useState('');
-    const highestVote: number[] = [];
+  const [error, setError] = useState("");
+  const highestVote: number[] = [];
 
-    // ---- VOTER SECTION ----
+  // ---- VOTER SECTION ----
 
-    const pushVoter: unknown[] = [];
-    const [voterArray, setVoterArray] = useState<unknown[]>(pushVoter);
-    const [voterLength, setVoterLength] = useState('');
-    const [voterAddress, setVoterAddress] = useState<unknown[]>([]);
+  const pushVoter: unknown[] = [];
+  const [voterArray, setVoterArray] = useState<unknown[]>(pushVoter);
+  const [voterLength, setVoterLength] = useState("");
+  const [voterAddress, setVoterAddress] = useState<unknown[]>([]);
 
+  // ----CONNECTING METAMASK
 
-    return (
-        <VotingContext.Provider value={{ votingTitle }}>
-            {children}
-        </VotingContext.Provider>
-    );
+  const checkIfWalletConnected = async () => {
+    if (!window.ethereum) return setError("Please install MetaMask");
+
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+
+    if (accounts.length) {
+      setCurrentAccount(accounts[0]);
+    } else {
+      setError("Please Install MetaMask & Connect, Reload");
+    };
+  };
+
+  return (
+    <VotingContext.Provider value={{ votingTitle, checkIfWalletConnected }}>
+      {children}
+    </VotingContext.Provider>
+  );
 };
