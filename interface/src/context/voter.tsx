@@ -25,12 +25,15 @@ interface VotingContextType {
   votingTitle: string;
   // Added checkIfWalletConnected to the interface
   checkIfWalletConnected: () => Promise<void>;
+  connectWallet: () => Promise<void>;
+
 }
 
 export const VotingContext = createContext<VotingContextType>({
   votingTitle: "Default Voting Title",
   // Added checkIfWalletConnected to the default value
-  checkIfWalletConnected: async () => {},
+  checkIfWalletConnected: async () => { },
+  connectWallet: async () => { },
 });
 
 interface VotingProviderProps {
@@ -70,11 +73,23 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
       setCurrentAccount(accounts[0]);
     } else {
       setError("Please Install MetaMask & Connect, Reload");
-    };
+    }
+  };
+
+  // ---- CONNECT WALLET
+
+  const connectWallet = async () => {
+    if (!window.ethereum) return setError("Please Install MetaMask");
+
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+
+    setCurrentAccount(accounts[0]);
   };
 
   return (
-    <VotingContext.Provider value={{ votingTitle, checkIfWalletConnected }}>
+    <VotingContext.Provider value={{ votingTitle, checkIfWalletConnected, connectWallet }}>
       {children}
     </VotingContext.Provider>
   );
