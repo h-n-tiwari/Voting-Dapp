@@ -2,9 +2,9 @@ import { createContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 // import Web3Modal from "web3modal";
 import { ethers } from "ethers";
-import { create as kuboRpcClient } from "kubo-rpc-client";
+// import { create as kuboRpcClient } from "kubo-rpc-client";
 // import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 // INTERNAL IMPORT
 import { VotingAddress, VotingAddressABI } from "./constants";
@@ -14,7 +14,7 @@ import type { ContractRunner } from "ethers";
 
 // Using the Kubo RPC client library to talk to an IPFS node
 
-const client = kuboRpcClient("https://ipfs.infura.io:5001/api/v0");
+// const client = kuboRpcClient("https://ipfs.infura.io:5001/api/v0");
 
 // Contract Function
 
@@ -26,14 +26,15 @@ interface VotingContextType {
   // Added checkIfWalletConnected to the interface
   checkIfWalletConnected: () => Promise<void>;
   connectWallet: () => Promise<void>;
-
+  uploadToPinata: (file: File) => Promise<string>;
 }
 
 export const VotingContext = createContext<VotingContextType>({
   votingTitle: "Default Voting Title",
   // Added checkIfWalletConnected to the default value
-  checkIfWalletConnected: async () => { },
-  connectWallet: async () => { },
+  checkIfWalletConnected: async () => {},
+  connectWallet: async () => {},
+  uploadToPinata: async () => "",
 });
 
 interface VotingProviderProps {
@@ -88,8 +89,42 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
     setCurrentAccount(accounts[0]);
   };
 
+  // UPLOAD VOTER IMAGE TO IPFS VIA PINATA
+
+  interface PinataResponse {
+    IpfsHash: string;
+  }
+
+  const uploadToPinata = async (file: File): Promise<string> => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.PINATA_JWT}`,
+          },
+          body: formData,
+        },
+      );
+
+      if (!res.ok) throw new Error(`Upload failed: ${res.statusText}`);
+
+      const data: PinataResponse = await res.json();
+      return `https://gateway.pinata.cloud/ipfs/${data.IpfsHash}`;
+    } catch (err: unknown) {
+      setError("Error uploading file to IPFS");
+      throw err;
+    }
+  };
+
   return (
-    <VotingContext.Provider value={{ votingTitle, checkIfWalletConnected, connectWallet }}>
+    <VotingContext.Provider
+      value={{ votingTitle, checkIfWalletConnected, connectWallet, uploadToPinata }}
+    >
       {children}
     </VotingContext.Provider>
   );
