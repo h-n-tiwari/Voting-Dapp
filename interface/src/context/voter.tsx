@@ -101,11 +101,11 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
       formData.append("file", file);
 
       const res = await fetch(
-        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        "https://uploads.pinata.cloud/v3/files",
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${process.env.PINATA_JWT}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT_TOKEN}`,
           },
           body: formData,
         },
