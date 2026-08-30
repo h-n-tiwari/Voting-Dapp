@@ -65,6 +65,18 @@ const AllowedVoters = () => {
             </p>
           </div>
         )}
+
+        {!fileUrl && (
+          <div className="sidInfo">
+            <div className="sidInfo_box">
+              <h4> Create candidate For Voting </h4>
+              <p> Blockchain voting organization, provide ethereum ecosystem </p>
+            </div>
+          </div>
+        )}
+
+
+
       </div>
     </div>
   );
