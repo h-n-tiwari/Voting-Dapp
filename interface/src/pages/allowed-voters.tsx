@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { useRouter } from 'next/router';
-import { useDropzone } from 'react-dropzone';
-import Image from 'next/image';
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { useRouter } from "next/router";
+import { useDropzone } from "react-dropzone";
+import Image from "next/image";
 
 // INTERNAL import
 
@@ -10,9 +10,15 @@ import images from "@/assets";
 import Button from "@/components/Button/button";
 import Input from "@/components/Input/input";
 
-const allowedVoters = () => {
-  const [fileUrl, setFileUrl] = useState(null);
-  const [formInput, setFormInput] = useState({
+interface FormInput {
+  name: string;
+  address: string;
+  position: string;
+}
+
+const AllowedVoters = () => {
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
+  const [formInput, setFormInput] = useState<FormInput>({
     name: "",
     address: "",
     position: "",
@@ -21,9 +27,16 @@ const allowedVoters = () => {
   const router = useRouter();
   const { uploadToPinata } = useContext(VotingContext);
 
-  return (
-    <div>allowedvoters</div>
-  )
-}
+  // ------ VOTER IMAGE DROP
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+      if (!acceptedFiles?.length) return;
+      const url = await uploadToPinata(acceptedFiles[0]);
+      setFileUrl(url);
+    },
+    [uploadToPinata],
+  );
 
-export default allowedVoters
+  return <div>allowedvoters</div>;
+};
+
+export default AllowedVoters;
