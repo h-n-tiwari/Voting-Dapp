@@ -71,6 +71,25 @@ const AllowedVoters = () => {
             <div className="sidInfo_box">
               <h4> Create candidate For Voting </h4>
               <p> Blockchain voting organization, provide ethereum ecosystem </p>
+              <p className="sideInfo_para"> Contract Candidate </p>
+            </div>
+
+            <div className="car">
+              {/*{voterArray.map((el, index) => (
+                <div key={index + 1} className="card_box">
+                  <div className="image">
+                    <img src="" alt="Voter Image" />
+                  </div>
+
+                  <div className="card_info">
+                    <p>Name</p>
+                    <p>Address</p>
+                    <p>Position</p>
+                  </div>
+
+                </div>
+              ))}*/}
+
             </div>
           </div>
         )}
