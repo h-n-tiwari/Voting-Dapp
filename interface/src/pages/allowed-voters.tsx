@@ -51,14 +51,17 @@ const AllowedVoters = () => {
         {fileUrl && (
           <div className="voterInfo">
             <img src={fileUrl} alt="Voter Image" />
-            <p>
-              Name: &nbps;<span>{formInput.name}</span>
+            <p className="flex gap-1">
+              <span>Name:</span>
+              <span>{formInput.name}</span>
             </p>
-            <p>
-              Add: &nbps;<span>{formInput.address.slice(4, 20)}</span>
+            <p className="flex gap-1">
+              <span>Add:</span>
+              <span>{formInput.address.slice(4, 20)}</span>
             </p>
-            <p>
-              Pos: &nbps;<span>{formInput.position}</span>
+            <p className="flex gap-1">
+              <span>Pos:</span>
+              <span>{formInput.position}</span>
             </p>
           </div>
         )}
