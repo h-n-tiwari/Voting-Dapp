@@ -36,6 +36,12 @@ const AllowedVoters = () => {
     [uploadToPinata],
   );
 
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { "image/*": [] },
+    maxSize: 1_000_000,
+  });
+
   return <div>allowedvoters</div>;
 };
 
