@@ -52,13 +52,13 @@ const AllowedVoters = () => {
           <div className="voterInfo">
             <img src={fileUrl} alt="Voter Image" />
             <p>
-              Name: &nbsp;<span>{formInput.name}</span>
+              Name: &nbps;<span>{formInput.name}</span>
             </p>
             <p>
-              Add: &nbsp;<span>{formInput.address.slice(4, 20)}</span>
+              Add: &nbps;<span>{formInput.address.slice(4, 20)}</span>
             </p>
             <p>
-              Pos: &nbsp;<span>{formInput.position}</span>
+              Pos: &nbps;<span>{formInput.position}</span>
             </p>
           </div>
         )}
