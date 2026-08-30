@@ -100,16 +100,13 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch(
-        "https://uploads.pinata.cloud/v3/files",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT_TOKEN}`,
-          },
-          body: formData,
+      const res = await fetch("https://uploads.pinata.cloud/v3/files", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT_TOKEN}`,
         },
-      );
+        body: formData,
+      });
 
       if (!res.ok) throw new Error(`Upload failed: ${res.statusText}`);
 
@@ -123,7 +120,12 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
 
   return (
     <VotingContext.Provider
-      value={{ votingTitle, checkIfWalletConnected, connectWallet, uploadToPinata }}
+      value={{
+        votingTitle,
+        checkIfWalletConnected,
+        connectWallet,
+        uploadToPinata,
+      }}
     >
       {children}
     </VotingContext.Provider>
