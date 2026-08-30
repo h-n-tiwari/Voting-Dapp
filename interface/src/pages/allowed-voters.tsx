@@ -11,6 +11,16 @@ import Button from "@/components/Button/button";
 import Input from "@/components/Input/input";
 
 const allowedVoters = () => {
+  const [fileUrl, setFileUrl] = useState(null);
+  const [formInput, setFormInput] = useState({
+    name: "",
+    address: "",
+    position: "",
+  });
+
+  const router = useRouter();
+  const { uploadToPinata } = useContext(VotingContext);
+
   return (
     <div>allowedvoters</div>
   )
