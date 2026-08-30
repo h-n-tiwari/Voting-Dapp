@@ -28,7 +28,8 @@ const AllowedVoters = () => {
   const { uploadToPinata } = useContext(VotingContext);
 
   // ------ VOTER IMAGE DROP
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
       if (!acceptedFiles?.length) return;
       const url = await uploadToPinata(acceptedFiles[0]);
       setFileUrl(url);
@@ -42,7 +43,28 @@ const AllowedVoters = () => {
     maxSize: 1_000_000,
   });
 
-  return <div>allowedvoters</div>;
+  // --- JSX ---
+
+  return (
+    <div className="createVoter">
+      <div>
+        {fileUrl && (
+          <div className="voterInfo">
+            <img src={fileUrl} alt="Voter Image" />
+            <p>
+              Name: &nbsp;<span>{formInput.name}</span>
+            </p>
+            <p>
+              Add: &nbsp;<span>{formInput.address.slice(4, 20)}</span>
+            </p>
+            <p>
+              Pos: &nbsp;<span>{formInput.position}</span>
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default AllowedVoters;
