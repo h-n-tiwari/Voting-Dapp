@@ -6,7 +6,7 @@ import Image from "next/image";
 // INTERNAL import
 
 import { VotingContext } from "@/context/voter";
-import images from "@/assets";
+import { Images } from "@assets/index";
 import Button from "@/components/Button/button";
 import Input from "@/components/Input/input";
 
@@ -105,17 +105,22 @@ const AllowedVoters = () => {
                     <p>Upload File: PNG, JPG, GIF, WEBM, WEBP Max 20MB</p>
 
                     <div className="voter_container_box_div_image">
-                      <img src={images.CREATOR} alt="" />
+                      <Image
+                        src={Images.CREATOR}
+                        width={150}
+                        height={150}
+                        objectFit="contain"
+                        alt="File Upload"
+                      />
                     </div>
+                    <p>Drag and Drop File</p>
+                    <p>or Browse Media on your Device</p>
                   </div>
                 </div>
             </div>
           </div>
         </div>
-      </div>
-
-
-
+        </div>
       </div>
     </div>
   );
