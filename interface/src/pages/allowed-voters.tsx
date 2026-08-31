@@ -89,10 +89,30 @@ const AllowedVoters = () => {
 
                 </div>
               ))}*/}
-
             </div>
           </div>
         )}
+
+      <div className="voter">
+        <div className="voter_container">
+          <h1> Create New Voter </h1>
+          <div className="voter_container_box">
+              <div className="voter_container_box_div">
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+
+                  <div className="voter_container_box_div_info">
+                    <p>Upload File: PNG, JPG, GIF, WEBM, WEBP Max 20MB</p>
+
+                    <div className="voter_container_box_div_image">
+                      <img src={images.CREATOR} alt="" />
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
 

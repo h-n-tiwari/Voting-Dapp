@@ -1,4 +1,7 @@
-import upload from "./upload.png";
-import creator from "./creator1.png";
+import UPLOAD from "./upload.png";
+import CREATOR from "./creator1.png";
 
-export default { upload, creator };
+export const images = {
+  UPLOAD,
+  CREATOR,
+};
