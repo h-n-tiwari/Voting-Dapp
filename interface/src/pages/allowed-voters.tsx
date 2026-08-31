@@ -74,7 +74,7 @@ const AllowedVoters = () => {
               <p className="sideInfo_para"> Contract Candidate </p>
             </div>
 
-            <div className="car">
+            <div className="card">
               {/*{voterArray.map((el, index) => (
                 <div key={index + 1} className="card_box">
                   <div className="image">
@@ -120,6 +120,17 @@ const AllowedVoters = () => {
             </div>
           </div>
         </div>
+        </div>
+
+        <div className="input_container">
+          <Input
+            inputType="text"
+            title="Address"
+            placeholder="Voter Name"
+            handleClick={(e) =>
+              setFileUrl({ ...formInput, name: e.target.value})
+            }
+          />
         </div>
       </div>
     </div>
