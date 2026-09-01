@@ -61,7 +61,10 @@ const AllowedVoters = () => {
           <div className="sidInfo">
             <div className="sidInfo_box">
               <h4> Create candidate For Voting </h4>
-              <p> Blockchain voting organization, provide ethereum ecosystem </p>
+              <p>
+                {" "}
+                Blockchain voting organization, provide ethereum ecosystem{" "}
+              </p>
               <p className="sideInfo_para"> Contract Candidate </p>
             </div>
             <div className="card">
@@ -131,6 +134,9 @@ const AllowedVoters = () => {
               />
             </div>
 
+            <div className="Button">
+              <Button btnName="Authorized Voter" handleClick={() => {}} />
+            </div>
           </div>
         </div>
       </div>
