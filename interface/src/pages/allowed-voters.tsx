@@ -19,6 +19,7 @@ const AllowedVoters = () => {
     address: "",
     position: "",
   });
+
   const router = useRouter();
   const { uploadToPinata } = useContext(VotingContext);
   // ------ VOTER IMAGE DROP
@@ -42,7 +43,7 @@ const AllowedVoters = () => {
       <div>
         {fileUrl && (
           <div className="voterInfo">
-            <img src={fileUrl} alt="Voter Image" />
+            <Image src={fileUrl} alt="Voter Image" />
             <p className="flex gap-1">
               <span>Name:</span>
               <span>{formInput.name}</span>
@@ -71,7 +72,7 @@ const AllowedVoters = () => {
               {/*{voterArray.map((el, index) => (
                 <div key={index + 1} className="card_box">
                   <div className="image">
-                    <img src="" alt="Voter Image" />
+                    <Image src="" alt="Voter Image" />
                   </div>
                   <div className="card_info">
                     <p>Name</p>
@@ -138,6 +139,22 @@ const AllowedVoters = () => {
               <Button btnName="Authorized Voter" handleClick={() => {}} />
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* -- */}
+      <div className="createdVoter">
+        <div className="createdVoter__info">
+          <Image src={Images.CREATOR} alt="user Profile" />
+          <p>Notice For User</p>
+          <p>
+            Organizer <span>0x939939...</span>
+          </p>
+          <p>
+            Only organizer of the voting contract can create voter
+            for voting elections.
+          </p>
+
         </div>
       </div>
     </div>
