@@ -28,8 +28,12 @@ const AllowedVoters = () => {
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (!acceptedFiles?.length) return;
-      const url = await uploadToPinata(acceptedFiles[0]);
-      setFileUrl(url);
+      try {
+        const url = await uploadToPinata(acceptedFiles[0]);
+        setFileUrl(url);
+      } catch (err) {
+        console.error(err);
+      }
     },
     [uploadToPinata],
   );
@@ -38,6 +42,8 @@ const AllowedVoters = () => {
     accept: { "image/*": [] },
     maxSize: 1_000_000,
   });
+
+  console.log(fileUrl);
 
   // --- JSX ---
   return (
