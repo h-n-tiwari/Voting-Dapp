@@ -91,8 +91,9 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
 
   // UPLOAD VOTER IMAGE TO IPFS VIA PINATA
 
-  interface PinataResponse {
-    IpfsHash: string;
+  interface PinataUploadResponse {
+    url?: string;
+    error?: string;
   }
 
   const uploadToPinata = async (file: File): Promise<string> => {
@@ -100,18 +101,18 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch("https://uploads.pinata.cloud/v3/files", {
+      const res = await fetch("/api/pinata", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT_TOKEN}`,
-        },
         body: formData,
       });
 
-      if (!res.ok) throw new Error(`Upload failed: ${res.statusText}`);
+      const data: PinataUploadResponse = await res.json();
 
-      const data: PinataResponse = await res.json();
-      return `https://gateway.pinata.cloud/ipfs/${data.IpfsHash}`;
+      if (!res.ok || !data.url) {
+        throw new Error(data.error || `Upload failed: ${res.statusText}`);
+      }
+
+      return data.url;
     } catch (err: unknown) {
       setError("Error uploading file to IPFS");
       throw err;
