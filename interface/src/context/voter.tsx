@@ -27,6 +27,7 @@ interface VotingContextType {
   checkIfWalletConnected: () => Promise<void>;
   connectWallet: () => Promise<void>;
   uploadToPinata: (file: File) => Promise<string>;
+  createVoter: () => Promise<void>;
 }
 
 export const VotingContext = createContext<VotingContextType>({
@@ -35,6 +36,7 @@ export const VotingContext = createContext<VotingContextType>({
   checkIfWalletConnected: async () => {},
   connectWallet: async () => {},
   uploadToPinata: async () => "",
+  createVoter: async () => {},
 });
 
 interface VotingProviderProps {
@@ -116,10 +118,21 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
 
       return data.url;
     } catch (err: unknown) {
-      setError("Error uploading file to IPFS");
+      setError("Error uploading file to Pinata");
       throw err;
     }
   };
+
+  // ---- CREATE VOTER----  
+
+  const createVoter = async () => {
+    try {
+
+    } catch (err: unknown) {
+      setError("Error in creating voter");
+      throw err;
+    }
+  }
 
   return (
     <VotingContext.Provider
@@ -128,6 +141,7 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
         checkIfWalletConnected,
         connectWallet,
         uploadToPinata,
+        createVoter,
       }}
     >
       {children}
