@@ -14,8 +14,11 @@ interface FormInput {
   position: string;
 }
 
+const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
+
 const AllowedVoters = () => {
   const [fileUrl, setFileUrl] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [formInput, setFormInput] = useState<FormInput>({
     name: "",
     address: "",
@@ -28,11 +31,14 @@ const AllowedVoters = () => {
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (!acceptedFiles?.length) return;
+      setUploadError(null);
       try {
         const url = await uploadToPinata(acceptedFiles[0]);
         setFileUrl(url);
       } catch (err) {
-        console.error(err);
+        const message =
+          err instanceof Error ? err.message : "Image upload failed";
+        setUploadError(message);
       }
     },
     [uploadToPinata],
@@ -40,10 +46,16 @@ const AllowedVoters = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { "image/*": [] },
-    maxSize: 1_000_000,
+    maxSize: MAX_IMAGE_BYTES,
+    onDropRejected: (rejections) => {
+      const reason = rejections[0]?.errors[0];
+      if (reason?.code === "file-too-large") {
+        setUploadError("Image must be 20MB or smaller");
+        return;
+      }
+      setUploadError(reason?.message ?? "This file was rejected");
+    },
   });
-
-  console.log(fileUrl);
 
   // --- JSX ---
   return (
@@ -56,7 +68,10 @@ const AllowedVoters = () => {
             <Image
               src={fileUrl}
               alt="Voter Image"
-              className="w-full h-full rounded-[25px]"
+              width={240}
+              height={240}
+              unoptimized
+              className="w-full h-full rounded-[25px] object-cover"
             />
             <p className="flex gap-1">
               <span>Name:</span>
@@ -83,10 +98,16 @@ const AllowedVoters = () => {
               <p className="sideInfo_para"> Contract Candidate </p>
             </div>
             <div className="card">
-              {/*{voterArray.map((el, index) => (
-                <div key={index + 1} className="card_box">
+              {/* {voterArray.map((el, i) => ( */}
+                <div className="card_box">
                   <div className="image">
-                    <Image src="" alt="Voter Image" />
+                    <Image
+                      src={Images.CREATOR}
+                      alt="Voter placeholder"
+                      width={80}
+                      height={80}
+                      className="object-cover"
+                    />
                   </div>
                   <div className="card_info">
                     <p>Name</p>
@@ -94,7 +115,7 @@ const AllowedVoters = () => {
                     <p>Position</p>
                   </div>
                 </div>
-              ))}*/}
+              {/* ))} */}
             </div>
           </div>
         )}
@@ -116,14 +137,19 @@ const AllowedVoters = () => {
                         src={Images.CREATOR}
                         width={150}
                         height={150}
-                        objectFit="contain"
                         alt="File Upload"
+                        priority
+                        className="object-contain"
                       />
                     </div>
                     <p className="leading-[5]">Drag and Drop File</p>
                     <p className="leading-[5]">
                       or Browse Media on your Device
                     </p>
+                    {isDragActive && <p>Drop the image here</p>}
+                    {uploadError && (
+                      <p className="text-red-400 px-4 pb-4">{uploadError}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -174,6 +200,7 @@ const AllowedVoters = () => {
             alt="user Profile"
             width={150}
             height={150}
+            className="object-contain"
           />
           <p>Notice For User</p>
           <p>

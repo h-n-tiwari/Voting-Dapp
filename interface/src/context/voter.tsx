@@ -109,7 +109,9 @@ export const VotingProvider = ({ children }: VotingProviderProps) => {
       const data: PinataUploadResponse = await res.json();
 
       if (!res.ok || !data.url) {
-        throw new Error(data.error || `Upload failed: ${res.statusText}`);
+        throw new Error(
+          data.error || `Upload failed: ${res.status} ${res.statusText}`,
+        );
       }
 
       return data.url;

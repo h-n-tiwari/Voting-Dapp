@@ -6,4 +6,4 @@ const voterlist = () => {
   )
 }
 
-export default voterlist
+export default voterlist;
