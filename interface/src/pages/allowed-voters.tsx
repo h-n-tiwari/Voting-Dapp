@@ -26,7 +26,7 @@ const AllowedVoters = () => {
   });
 
   const router = useRouter();
-  const { uploadToPinata } = useContext(VotingContext);
+  const { uploadToPinata, createVoter } = useContext(VotingContext);
   // ------ VOTER IMAGE DROP
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -186,7 +186,7 @@ const AllowedVoters = () => {
             {/* Button */}
 
             <div className="text-end">
-              <Button btnName="Authorized Voter" handleClick={() => {}} />
+              <Button btnName="Authorized Voter" handleClick={() => createVoter(formInput, fileUrl, router)} />
             </div>
           </div>
         </div>
