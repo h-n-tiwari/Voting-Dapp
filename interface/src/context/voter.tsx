@@ -18,7 +18,7 @@ import type { ContractRunner } from "ethers";
 //   "https://ipfs.infura.io:5001/api/v0"
 // );
 
-// Contract Function
+//---- CONTRACT FUNCTION ----
 const fetchContract = (signerOrProvider: ContractRunner) =>
   new ethers.Contract(
     VotingAddress,
@@ -26,18 +26,18 @@ const fetchContract = (signerOrProvider: ContractRunner) =>
     signerOrProvider
   );
 
-// Voter Form Input
+//---- VOTER FORM INPUT ----
 export interface VoterFormInput {
   name: string;
   address: string;
   position: string;
 }
 
-// Voting Context Type
+//---- VOTING CONTEXT TYPE ----
 interface VotingContextType {
   votingTitle: string;
 
-  // Added checkIfWalletConnected to the interface
+  //---- ADDED checkIfWalletConnected to the interface ----
   checkIfWalletConnected: () => Promise<void>;
 
   connectWallet: () => Promise<void>;
@@ -51,26 +51,26 @@ interface VotingContextType {
   ) => Promise<void>;
 }
 
-// Voting Context
+//---- VOTING CONTEXT ----
 export const VotingContext = createContext<VotingContextType>({
   votingTitle: "Default Voting Title",
 
-  // Added checkIfWalletConnected to the default value
-  checkIfWalletConnected: async () => {},
+  //---- ADDED checkIfWalletConnected to the default value ----
+  checkIfWalletConnected: async () => { },
 
-  connectWallet: async () => {},
+  connectWallet: async () => { },
 
   uploadToPinata: async () => "",
 
-  createVoter: async () => {},
+  createVoter: async () => { },
 });
 
-// Voting Provider Props
+//---- VOTING PROVIDER PROPS ----
 interface VotingProviderProps {
   children: ReactNode;
 }
 
-// Voting Provider
+//---- VOTING PROVIDER ----
 export const VotingProvider = ({
   children,
 }: VotingProviderProps) => {
@@ -78,9 +78,9 @@ export const VotingProvider = ({
 
   const router = useRouter();
 
-  const [currentAccount, setCurrentAccount] = useState("");
+  const [currentAccount, setCurrentAccount] = useState<string>("");
 
-  const [candidateLength, setCandidateLength] = useState("");
+  const [candidateLength, setCandidateLength] = useState<string>("");
 
   const pushCandidate: unknown[] = [];
 
@@ -91,7 +91,7 @@ export const VotingProvider = ({
 
   // ---- END OF CANDIDATE DATA ----
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
 
   const highestVote: number[] = [];
 
@@ -102,7 +102,7 @@ export const VotingProvider = ({
   const [voterArray, setVoterArray] =
     useState<unknown[]>(pushVoter);
 
-  const [voterLength, setVoterLength] = useState("");
+  const [voterLength, setVoterLength] = useState<string>("");
 
   const [voterAddress, setVoterAddress] =
     useState<unknown[]>([]);
@@ -166,7 +166,7 @@ export const VotingProvider = ({
       if (!res.ok || !data.url) {
         throw new Error(
           data.error ||
-            `Upload failed: ${res.status} ${res.statusText}`
+          `Upload failed: ${res.status} ${res.statusText}`
         );
       }
 
