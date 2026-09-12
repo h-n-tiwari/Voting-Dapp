@@ -183,21 +183,16 @@ export const VotingProvider = ({
   const createVoter = async (
     formInput: VoterFormInput,
     fileUrl: string | null,
-    router: NextRouter
+    _router: NextRouter
   ) => {
     try {
       const { name, address, position } = formInput;
 
-      console.log(
-        name,
-        address,
-        position,
-        fileUrl
-      );
+      // This runs in the browser DevTools console, not the `next dev` terminal.
+      console.log(name, address, position, fileUrl);
     } catch (err: unknown) {
+      console.error("Error in creating voter", err);
       setError("Error in creating voter");
-
-      throw err;
     }
   };
 

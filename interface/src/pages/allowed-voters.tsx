@@ -33,9 +33,9 @@ const AllowedVoters = () => {
       if (!acceptedFiles?.length) return;
       setUploadError(null);
       try {
-        const url = await uploadToPinata(acceptedFiles[0]);
+        const url: string = await uploadToPinata(acceptedFiles[0]);
         setFileUrl(url);
-      } catch (err) {
+      } catch (err: unknown) {
         const message =
           err instanceof Error ? err.message : "Image upload failed";
         setUploadError(message);
@@ -64,7 +64,7 @@ const AllowedVoters = () => {
       <div>
         {fileUrl && (
           // voterInfo
-          <div className="absolute top-48 left-12 w-60 h-60 p-4 bg-[#231E39] rounded-[25px] text-[#b3b8cd] text-start">
+          <div className="w-60 p-4 bg-[#231E39] rounded-[25px] text-[#b3b8cd] text-start">
             <Image
               src={fileUrl}
               alt="Voter Image"
@@ -119,8 +119,10 @@ const AllowedVoters = () => {
             </div>
           </div>
         )}
+      </div>
+
         {/* voter */}
-        <div className="bg-[#231E39] rounded-[25px] shadow-[10px_10px_15px_rgba(0,0,0,0.35)] text-[#b3b8cd] p-8">
+        <div className="relative z-10 bg-[#231E39] rounded-[25px] shadow-[10px_10px_15px_rgba(0,0,0,0.35)] text-[#b3b8cd] p-8">
           <div className="voter_container">
             <h1>Create New Voter</h1>
             {/* voter_container_box */}
@@ -186,11 +188,15 @@ const AllowedVoters = () => {
             {/* Button */}
 
             <div className="text-end">
-              <Button btnName="Authorized Voter" handleClick={() => createVoter(formInput, fileUrl, router)} />
+              <Button
+                btnName="Authorized Voter"
+                handleClick={() => {
+                  void createVoter(formInput, fileUrl, router);
+                }}
+              />
             </div>
           </div>
         </div>
-      </div>
 
       {/* CREATED VOTER */}
       <div className="createdVoter">
