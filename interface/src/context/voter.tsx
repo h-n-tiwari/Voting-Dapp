@@ -189,7 +189,10 @@ export const VotingProvider = ({
       const { name, address, position } = formInput;
 
       // This runs in the browser DevTools console, not the `next dev` terminal.
-      console.log(name, address, position, fileUrl);
+      // console.log(name, address, position, fileUrl);
+
+      if (!name || !address || !position)
+        return setError("Input data is missing");
     } catch (err: unknown) {
       console.error("Error in creating voter", err);
       setError("Error in creating voter");
