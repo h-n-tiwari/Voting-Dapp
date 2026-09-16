@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
-// import Web3Modal from "web3modal";
+import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 // import { create as kuboRpcClient } from "kubo-rpc-client";
 // import axios from "axios";
@@ -193,6 +193,14 @@ export const VotingProvider = ({
 
       if (!name || !address || !position)
         return setError("Input data is missing");
+
+      // CONNECTING SMART CONTRACT
+      const web3modal = new Web3Modal();
+      const connection = await web3modal.connect();
+      const provider = new ethers.BrowserProvider(connection);
+      const signer = await provider.getSigner();
+      const contract = fetchContract(signer);
+
     } catch (err: unknown) {
       console.error("Error in creating voter", err);
       setError("Error in creating voter");
