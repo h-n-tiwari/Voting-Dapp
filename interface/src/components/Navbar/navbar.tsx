@@ -37,9 +37,8 @@ const NavBar = () => {
       <div className="">
         {/* title */}
         <div className="">
-          <Link href={{ pathname: '/' }}>
-            <Image src={loading} alt="logo" width={80}
-            height={80} />
+          <Link href={{ pathname: "/" }}>
+            <Image src={loading} alt="logo" width={80} height={80} />
           </Link>
         </div>
 
@@ -53,14 +52,18 @@ const NavBar = () => {
                   {currentAccount.slice(0, 10)}...
                 </button>
                 {currentAccount && (
-                  <span>{openNav ? (
-                    <AiFillUnlock onClick={() => openNavigation()} />
-                  ) : (
-                    <AiFillLock onClick={() => openNavigation()} />
-                  )}</span>
+                  <span>
+                    {openNav ? (
+                      <AiFillUnlock onClick={() => openNavigation()} />
+                    ) : (
+                      <AiFillLock onClick={() => openNavigation()} />
+                    )}
+                  </span>
                 )}
               </div>
             </div>
+          ) : (
+            <button onClick={() => connectWallet()}> Connect Wallet </button>
           )}
         </div>
       </div>
