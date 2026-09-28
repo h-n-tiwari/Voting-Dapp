@@ -61,6 +61,25 @@ const NavBar = () => {
                   </span>
                 )}
               </div>
+
+              {openNav && (
+                {/* navigation */}
+                <div className="">
+                  <p>
+                    <Link href={{pathname: '/'}}>Home</Link>
+                  </p>
+                  <p>
+                    <Link href={{pathname: "candidate-registration"}}>Candidate Registration</Link>
+                  </p>
+                  <p>
+                    <Link href={{pathname: "allow-voters"}}>Voter Registration</Link>
+                  </p>
+                  <p>
+                    <Link href={{pathname: "voterList"}}>Voter List</Link>
+                  </p>
+                </div>
+              )}
+
             </div>
           ) : (
             <button onClick={() => connectWallet()}> Connect Wallet </button>
