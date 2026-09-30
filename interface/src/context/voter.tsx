@@ -201,6 +201,8 @@ export const VotingProvider = ({
       const signer = await provider.getSigner();
       const contract = fetchContract(signer);
 
+      console.log(contract);
+
     } catch (err: unknown) {
       console.error("Error in creating voter", err);
       setError("Error in creating voter");
