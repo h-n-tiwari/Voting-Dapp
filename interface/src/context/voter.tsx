@@ -203,9 +203,21 @@ export const VotingProvider = ({
 
       console.log(contract);
 
-    } catch (err: unknown) {
-      console.error("Error in creating voter", err);
+    } catch (error: unknown) {
+      console.error("Error in creating voter", error);
       setError("Error in creating voter");
+    }
+  };
+
+
+  // GET CANDIDATE DATA
+  const getCandidateData = async () => {
+    try {
+
+
+    } catch (error: unknown) {
+      console.log(error)
+
     }
   };
 
