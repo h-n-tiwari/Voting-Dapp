@@ -199,6 +199,21 @@ export const VotingProvider = ({
   const getCandidateData = async () => {
     try {
 
+      // CONNECTING SMART CONTRACT
+      const { contract } = await connectContract();
+
+      // ALL CANDIDATE
+      const allCandidate: string[] = await contract.getCandidate();
+      console.log(allCandidate);
+
+      allCandidate.map(async (el) => {
+        const singleCandidateData = await contract.getCandidatedata(el);
+
+        pushCandidate.push(singleCandidateData);
+        candidateIndex.push(singleCandidateData[2].toNumber());
+
+      })
+
 
     } catch (error: unknown) {
       console.log(error)
