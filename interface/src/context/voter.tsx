@@ -1,15 +1,12 @@
 import { createContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
-import Web3Modal from "web3modal";
-import { ethers } from "ethers";
 // import { create as kuboRpcClient } from "kubo-rpc-client";
 // import axios from "axios";
 import { useRouter } from "next/router";
 import type { NextRouter } from "next/router";
 
 // INTERNAL IMPORT
-import { VotingAddress, VotingAddressABI } from "./constants";
-import type { ContractRunner } from "ethers";
+import { connectContract } from "../utils/app-feature";
 
 // IPFS Client
 // Using the Kubo RPC client library to talk to an IPFS node
@@ -17,14 +14,6 @@ import type { ContractRunner } from "ethers";
 // const client = kuboRpcClient(
 //   "https://ipfs.infura.io:5001/api/v0"
 // );
-
-//---- CONTRACT FUNCTION ----
-const fetchContract = (signerOrProvider: ContractRunner) =>
-  new ethers.Contract(
-    VotingAddress,
-    VotingAddressABI,
-    signerOrProvider
-  );
 
 //---- VOTER FORM INPUT ----
 export interface VoterFormInput {
@@ -195,11 +184,7 @@ export const VotingProvider = ({
         return setError("Input data is missing");
 
       // CONNECTING SMART CONTRACT
-      const web3modal = new Web3Modal();
-      const connection = await web3modal.connect();
-      const provider = new ethers.BrowserProvider(connection);
-      const signer = await provider.getSigner();
-      const contract = fetchContract(signer);
+      const { contract } = await connectContract();
 
       console.log(contract);
 
