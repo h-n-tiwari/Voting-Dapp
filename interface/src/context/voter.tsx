@@ -214,6 +214,11 @@ export const VotingProvider = ({
 
       })
 
+      //CANDIDATE LENGTH
+      const allCandidateLength = await contract.getCandidateLength();
+      setCandidateLength(allCandidateLength.toNumber());
+
+
 
     } catch (error: unknown) {
       console.log(error)
