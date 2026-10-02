@@ -1,19 +1,10 @@
 import { createContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
-// import { create as kuboRpcClient } from "kubo-rpc-client";
-// import axios from "axios";
 import { useRouter } from "next/router";
 import type { NextRouter } from "next/router";
 
 // INTERNAL IMPORT
 import { connectContract } from "../utils/app-feature";
-
-// IPFS Client
-// Using the Kubo RPC client library to talk to an IPFS node
-
-// const client = kuboRpcClient(
-//   "https://ipfs.infura.io:5001/api/v0"
-// );
 
 //---- VOTER FORM INPUT ----
 export interface VoterFormInput {
@@ -36,7 +27,7 @@ interface VotingContextType {
   createVoter: (
     formInput: VoterFormInput,
     fileUrl: string | null,
-    router: NextRouter
+    router: NextRouter,
   ) => Promise<void>;
 }
 
@@ -45,13 +36,13 @@ export const VotingContext = createContext<VotingContextType>({
   votingTitle: "Default Voting Title",
 
   //---- ADDED checkIfWalletConnected to the default value ----
-  checkIfWalletConnected: async () => { },
+  checkIfWalletConnected: async () => {},
 
-  connectWallet: async () => { },
+  connectWallet: async () => {},
 
   uploadToPinata: async () => "",
 
-  createVoter: async () => { },
+  createVoter: async () => {},
 });
 
 //---- VOTING PROVIDER PROPS ----
@@ -60,9 +51,7 @@ interface VotingProviderProps {
 }
 
 //---- VOTING PROVIDER ----
-export const VotingProvider = ({
-  children,
-}: VotingProviderProps) => {
+export const VotingProvider = ({ children }: VotingProviderProps) => {
   const votingTitle = "My first smart contract app";
 
   const router = useRouter();
@@ -88,13 +77,11 @@ export const VotingProvider = ({
 
   const pushVoter: unknown[] = [];
 
-  const [voterArray, setVoterArray] =
-    useState<unknown[]>(pushVoter);
+  const [voterArray, setVoterArray] = useState<unknown[]>(pushVoter);
 
   const [voterLength, setVoterLength] = useState<string>("");
 
-  const [voterAddress, setVoterAddress] =
-    useState<unknown[]>([]);
+  const [voterAddress, setVoterAddress] = useState<unknown[]>([]);
 
   // ---- CONNECTING METAMASK ----
 
@@ -110,9 +97,7 @@ export const VotingProvider = ({
     if (accounts.length) {
       setCurrentAccount(accounts[0]);
     } else {
-      setError(
-        "Please Install MetaMask & Connect, Reload"
-      );
+      setError("Please Install MetaMask & Connect, Reload");
     }
   };
 
@@ -137,9 +122,7 @@ export const VotingProvider = ({
     error?: string;
   }
 
-  const uploadToPinata = async (
-    file: File
-  ): Promise<string> => {
+  const uploadToPinata = async (file: File): Promise<string> => {
     try {
       const formData = new FormData();
 
@@ -154,8 +137,7 @@ export const VotingProvider = ({
 
       if (!res.ok || !data.url) {
         throw new Error(
-          data.error ||
-          `Upload failed: ${res.status} ${res.statusText}`
+          data.error || `Upload failed: ${res.status} ${res.statusText}`,
         );
       }
 
@@ -172,7 +154,7 @@ export const VotingProvider = ({
   const createVoter = async (
     formInput: VoterFormInput,
     fileUrl: string | null,
-    _router: NextRouter
+    _router: NextRouter,
   ) => {
     try {
       const { name, address, position } = formInput;
@@ -180,25 +162,50 @@ export const VotingProvider = ({
       // This runs in the browser DevTools console, not the `next dev` terminal.
       // console.log(name, address, position, fileUrl);
 
-      if (!name || !address || !position)
+      if (!name || !address || !position) {
         return setError("Input data is missing");
+      }
+
+      if (!fileUrl) {
+        return setError("Candidate image is required");
+      }
 
       // CONNECTING SMART CONTRACT
       const { contract } = await connectContract();
 
-      console.log(contract);
+      // console.log(contract);
 
+      // CREATE CANDIDATE METADATA
+      const metadata = JSON.stringify({
+        name,
+        address,
+        position,
+        image: fileUrl,
+      });
+
+      // CONVERT JSON INTO FILE
+      const metadataFile = new File([metadata], "candidate.json", {
+        type: "application/json",
+      });
+
+      // UPLOAD METADATA TO PINATA
+      const metadataUrl = await uploadToPinata(metadataFile);
+
+      if (!metadataUrl) {
+        return setError("Failed to upload metadata");
+      }
+
+      console.log("Candidate metadata:", metadata);
+      console.log("Metadata URL:", metadataUrl);
     } catch (error: unknown) {
       console.error("Error in creating voter", error);
       setError("Error in creating voter");
     }
   };
 
-
   // GET CANDIDATE DATA
   const getCandidateData = async () => {
     try {
-
       // CONNECTING SMART CONTRACT
       const { contract } = await connectContract();
 
@@ -211,18 +218,13 @@ export const VotingProvider = ({
 
         pushCandidate.push(singleCandidateData);
         candidateIndex.push(singleCandidateData[2].toNumber());
-
-      })
+      });
 
       //CANDIDATE LENGTH
       const allCandidateLength = await contract.getCandidateLength();
       setCandidateLength(allCandidateLength.toNumber());
-
-
-
     } catch (error: unknown) {
-      console.log(error)
-
+      console.log(error);
     }
   };
 
@@ -234,6 +236,14 @@ export const VotingProvider = ({
         connectWallet,
         uploadToPinata,
         createVoter,
+        giveVote,
+        error,
+        voterArray,
+        voterLength,
+        voterAddress,
+        currentAccount,
+        candidateLength,
+        candidateArray,
       }}
     >
       {children}
